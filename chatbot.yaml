@@ -1,0 +1,10 @@
+name: demo-es6
+
+entryPoint: main.sc
+
+botEngine: v2
+language: ru
+  
+tests:
+  include:
+    - "*.xml"

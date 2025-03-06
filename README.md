@@ -1,1 +1,0 @@
-# teame-jaicp-bot

@@ -1,2 +1,14 @@
 <test>
+    
+    <test-case id="Путь по кнопкам через онбординг">
+       <q>/start</q>
+       <a class="/Start" state="/Onboarding/Welcome"/>
+       <a state="/Onboarding/Welcome"/>
+       <q>Расскажи больше!</q>
+       <a state="/Onboarding/ScienceFact"/>
+       <a state="/Onboarding/ScienceFact"/>
+       <q>Взять задание!</q>
+       <a state="/Onboarding/FirstTask"/>
+    </test-case>
+    
 </test>

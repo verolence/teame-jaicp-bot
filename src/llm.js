@@ -1,6 +1,6 @@
 const answerMatchesQuestion = (question, answer) => {
-    result = answer === question;
+    let result = (answer === question);
     return result;
 };
 
-export default { fs, path, axios, ocrSpace };
+export default { answerMatchesQuestion };

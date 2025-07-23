@@ -54,12 +54,14 @@ theme: /Onboarding
             
         state: CatchGrattitude
             q: *
-            if: llm.answerMatchesQuestion()
-                script: $session.taskAnswer = $request.query;
-                a: Супер! Это ведь было не сложно? Но день стал уже чуточку лучше, когда удалось заметить в нем светлые вещи.
-                a: По команде /history ты сможешь найти свои ответы на задания, а с командой /newtask получить новое предложение от меня. 
-            else: 
-                go!: /Freestyle/Convo
+            scriptEs6:
+                if (llm.answerMatchesQuestion()) {
+                    $session.taskAnswer = $request.query;
+                    $reactions.answer("Супер! Это ведь было не сложно? Но день стал уже чуточку лучше, когда удалось заметить в нем светлые вещи.");
+                    $reactions.answer("По команде /history ты сможешь найти свои ответы на задания, а с командой /newtask получить новое предложение от меня.");
+                } else {
+                    reactions.tr$ansition("/Freestyle/Convo");
+                }
 
     state: History
         q!: $regex</history>

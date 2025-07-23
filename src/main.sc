@@ -8,6 +8,9 @@ require: llm.js
 
 require: patterns.sc
   module = sys.zb-common
+  
+require: answers.yaml
+    var = answers
 
 init:
     bind("onAnyError", function() {
@@ -25,7 +28,7 @@ theme: /
     state: GoodBye
         q: $disagree || fromState="/Start"
         q!: $bye
-        a: Жаль, что нам приходится прощаться! Если что, заглядывай снова, я буду ждать тебя.
+        a: {{ answers["Bye"] }}
         script:
             $jsapi.stopSession();
             
@@ -57,8 +60,8 @@ theme: /
 theme: /Onboarding
     
     state: Welcome
-        a: Привет! Меня зовут Тими. Я хочу стать твоим компаньоном, подбрасывать идеи, как сделать обычные будние дни немного ярче и счастливее.
-        a: А ты знаешь, что новый опыт и изучение всего неизвестного оказывают мощное влияние на настроение и мозг?
+        a: {{ answers["WelcomeHello"] }}
+        a: {{ answers["WelcomeQuestion"] }}
         buttons: 
             "Расскажи больше!"
         q: * || toState = "/Onboarding/ScienceFact"

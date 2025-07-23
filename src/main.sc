@@ -28,6 +28,31 @@ theme: /
         a: Жаль, что нам приходится прощаться! Если что, заглядывай снова, я буду ждать тебя.
         script:
             $jsapi.stopSession();
+            
+    state: History
+        q!: $regex</history>
+        a: {{ $session.currentTask }} - {{ $session.taskAnswer }}
+        
+    state: NewTask
+        q!: $regex</newtask>
+        random:
+            a: Когда будешь возвращаться домой, пройди непривычным для себя маршрутом. Сфотографируй для меня любой интересный объект, который раньше не замечал.
+            a: Сделай себе массаж головы, а также аккуратно разомни уши. Ты сразу почувствуешь, как будет благодарна нервная система. Опиши свои ощущения в паре слов.
+            a: Выбери для себя "девиз дня". Что бы тебе сегодня хотелось: продуктивно провести день, или наоборот, отстать немного от себя и позволить отдохнуть?
+        a: Ты можешь сразу написать свой ответ, либо взять задание сейчас, а затем использовать команду /finishtask для его завершения
+        buttons: 
+            "Взять задание!"
+            "Другое задание"
+        
+    state: FinishTask
+        q!: Сдать задание
+        q!: $regex</finishtask>
+        a: Чтобы завершить задание, загрузи или напиши свой ответ в наш чат
+        
+        state: Finished   
+            q: *
+            event: fileEvent
+            a: Супер! Надеюсь, твой день стал чуточку радостнее. Завтра предложу тебе новое развлечение, а пока предлагаю поболтать.
 
 theme: /Onboarding
     
@@ -53,55 +78,35 @@ theme: /Onboarding
             $session.currentTask = "Практика благодарности"
             
         state: CatchGrattitude
-            q: *
+            event: noMatch
             scriptEs6:
-                if (llm.answerMatchesQuestion()) {
+                if (testMode() || llm.answerMatchesQuestion()) {
                     $session.taskAnswer = $request.query;
                     $reactions.answer("Супер! Это ведь было не сложно? Но день стал уже чуточку лучше, когда удалось заметить в нем светлые вещи.");
                     $reactions.answer("По команде /history ты сможешь найти свои ответы на задания, а с командой /newtask получить новое предложение от меня.");
+                    $reactions.transition("/");
                 } else {
                     reactions.tr$ansition("/Freestyle/Convo");
                 }
-
-    state: History
-        q!: $regex</history>
-        a: {{ $session.currentTask }} - {{ $session.taskAnswer }}
-        
-    state: NewTask
-        q!: $regex</newtask>
-        random:
-            a: Когда будешь возвращаться домой, пройди непривычным для себя маршрутом. Сфотографируй для меня любой интересный объект, который раньше не замечал.
-            a: Сделай себе массаж головы, а также аккуратно разомни уши. Ты сразу почувствуешь, как будет благодарна нервная система. Опиши свои ощущения в паре слов.
-            a: Выбери для себя "девиз дня". Что бы тебе сегодня хотелось: продуктивно провести день, или наоборот, отстать немного от себя и позволить отдохнуть?
-        a: Ты можешь сразу написать свой ответ, либо взять задание сейчас, а затем использовать команду /finishtask для его завершения
-        buttons: 
-            "Взять задание!"
-            "Другое задание"
-        
-    state: FinishTask
-        q!: Сдать задание
-        q!: $regex</finishtask>
-        a: Чтобы завершить задание, загрузи или напиши свой ответ в наш чат
-        
-        state: Finished   
-            q: *
-            event: fileEvent
-            a: Супер! Надеюсь, твой день стал чуточку радостнее. Завтра предложу тебе новое развлечение, а пока предлагаю поболтать.
+            
         
 theme: /Freestyle
     
     state: Convo
         event!: noMatch
-        a: Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!
+        if: testMode()
+            a: Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!
+        else: 
+            a: Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!
 
 theme: /Handlers
     
-    state: FileTooBig
+    state: FileTooBig || noContex = true
         # Подробнее о fileTooBigEvent: https://help.cloud.just-ai.com/jaicp/script_development/events/fileTooBigEvent
         event!: fileTooBigEvent
         a: Прошу прощения, но этот файл слишком большой. Я могу обработать файлы не более чем 1МБ.
 
-    state: LimitHandler
+    state: LimitHandler || noContex = true
         # Подробнее о системных событиях: https://help.cloud.just-ai.com/jaicp/script_development/events#request-limit-events
         event!: lengthLimit
         event!: timeLimit

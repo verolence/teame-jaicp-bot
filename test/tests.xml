@@ -9,6 +9,11 @@
        <a state="/Onboarding/ScienceFact"/>
        <q>Взять задание!</q>
        <a state="/Onboarding/FirstTask"/>
+       <q>за зайку и лужайку</q>
+       <a state="/Onboarding/FirstTask/CatchGrattitude"/>
+       <a state="/Onboarding/FirstTask/CatchGrattitude"/>
+       <q>классно, спасибочки</q>
+       <a state="/Freestyle/Convo"/>
     </test-case>
     
 </test>

@@ -56,6 +56,7 @@ theme: /
             q: *
             event: fileEvent
             a: Супер! Надеюсь, твой день стал чуточку радостнее. Завтра предложу тебе новое развлечение, а пока предлагаю поболтать.
+            go: /
 
 theme: /Onboarding
     
@@ -91,8 +92,7 @@ theme: /Onboarding
                 } else {
                     reactions.tr$ansition("/Freestyle/Convo");
                 }
-            
-        
+
 theme: /Freestyle
     
     state: Convo
@@ -105,12 +105,10 @@ theme: /Freestyle
 theme: /Handlers
     
     state: FileTooBig || noContex = true
-        # Подробнее о fileTooBigEvent: https://help.cloud.just-ai.com/jaicp/script_development/events/fileTooBigEvent
         event!: fileTooBigEvent
         a: Прошу прощения, но этот файл слишком большой. Я могу обработать файлы не более чем 1МБ.
 
     state: LimitHandler || noContex = true
-        # Подробнее о системных событиях: https://help.cloud.just-ai.com/jaicp/script_development/events#request-limit-events
         event!: lengthLimit
         event!: timeLimit
         event!: nluSystemLimit

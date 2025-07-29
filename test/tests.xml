@@ -16,4 +16,12 @@
        <a state="/Freestyle/Convo"/>
     </test-case>
     
+    <test-case id="Сдать задание">
+       <state>Freestyle/Convo</state>
+       <q>/finishtask</q>
+       <a state="/FinishTask"/>
+       <q>я сделаль</q>
+       <a state="/FinishTask/Finished"/>
+    </test-case>
+    
 </test>

@@ -97,10 +97,14 @@ theme: /Freestyle
     
     state: Convo
         event!: noMatch
-        if: testMode()
-            a: Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!
-        else: 
-            a: Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!
+        scriptEs6:
+            if (testMode()) {
+                $reactions.answer("Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!");
+            } else {
+                let llmAnswer = "кря";
+                //let llmAnswer = llm.cailaRequest($request.query)
+                $reactions.answer(llmAnswer);
+            }
 
 theme: /Handlers
     

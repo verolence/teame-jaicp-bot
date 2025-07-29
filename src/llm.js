@@ -8,7 +8,7 @@ const answerMatchesQuestion = (question, answer) => {
 async function llmRequest(prompt) {
     
     const account = "just-ai";
-    const model = "openai-proxy";
+    const model = "gemini";
     const token = $secrets.get("CAILA_TOKEN", "");
     
     const headers = {
@@ -17,8 +17,11 @@ async function llmRequest(prompt) {
     };
     
     let body = {
-        "model": "gpt-4o",
+        "model": "gemini-2.0-flash-lite",
         "messages": [
+            { 
+                "role": "system", 
+                "content": "отвечай стихами" },
             {
                 "role": "user",
                 "content": prompt
@@ -36,7 +39,7 @@ async function llmRequest(prompt) {
         $.session.name = res.data.choices[0].message.content;
         return $.session.name; 
     } catch (e) {
-        throw new Error(">>> Error calling Caila API in generateNames" + JSON.stringify(e));
+        throw new Error(">>> Error calling Caila API in llmRequest" + JSON.stringify(e));
     }
 }
 

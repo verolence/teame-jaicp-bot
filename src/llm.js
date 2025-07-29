@@ -30,18 +30,21 @@ async function cailaRequest(query) {
         ],
         "temperature": 1
     };
+    
+    let llmRes = "малышка";
+    return llmRes; 
 
-    try {
-        const res = await axios.post(
-            `https://caila.io/api/mlpgate/account/${account}/model/${model}/predict`,
-            body,
-            {headers: headers}
-        );
-        res = res.data.choices[0].message.content;
-        return res; 
-    } catch (e) {
-        throw new Error(">>> Error calling Caila API in llmRequest" + JSON.stringify(e));
-    }
+    // try {
+    //     const res = await axios.post(
+    //         `https://caila.io/api/mlpgate/account/${account}/model/${model}/predict`,
+    //         body,
+    //         {headers: headers}
+    //     );
+    //     let llmRes = res.data.choices[0].message.content;
+    //     return llmRes; 
+    // } catch (e) {
+    //     throw new Error(">>> Error calling Caila API in llmRequest" + JSON.stringify(e));
+    // }
 }
 
 export default { answerMatchesQuestion, cailaRequest };

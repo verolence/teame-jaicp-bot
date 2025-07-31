@@ -1,3 +1,5 @@
+import axios from "axios"
+
 const answerMatchesQuestion = (question, answer) => {
     let result = (answer === question);
     return result;
@@ -11,6 +13,7 @@ async function cailaRequest(query) {
     
     const account = "just-ai";
     const model = "gemini";
+    const url = `https://caila.io/api/mlpgate/account/${account}/model/${model}/predict`;
     const token = $secrets.get("CAILA_TOKEN", "");
     
     const headers = {
@@ -33,16 +36,26 @@ async function cailaRequest(query) {
         "temperature": 1
     };
     
-    log(`>>> Body: ${toPrettyString(body)}`)
+    log(`>>> Body: ${toPrettyString(body)}`);
     
-    log(`>>> llmRes: ${toPrettyString(llmRes)}`)
+    log(`>>> Url: ${toPrettyString(url)}`);
+    
+    const res = await axios.post(
+        url,
+        body,
+        {headers: headers}
+    );
+    let llmRes = res.data.choices[0].message.content;
     return llmRes; 
 
     // try {
     //     const res = await axios.post(
     //         `https://caila.io/api/mlpgate/account/${account}/model/${model}/predict`,
-    //         body,
-    //         {headers: headers}
+    //         JSON.stringify(body),
+    //         {
+    //             headers: headers,
+    //             httpsAgent: new https.Agent({ rejectUnauthorized: false })  // ← Игнорировать SSL-ошибки
+    //         }
     //     );
     //     let llmRes = res.data.choices[0].message.content;
     //     return llmRes; 

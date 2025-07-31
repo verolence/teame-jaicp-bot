@@ -7,6 +7,8 @@ const answerMatchesQuestion = (question, answer) => {
 
 async function cailaRequest(query) {
     
+    log(`>>> Query: ${toPrettyString(query)}`)
+    
     const account = "just-ai";
     const model = "gemini";
     const token = $secrets.get("CAILA_TOKEN", "");
@@ -31,7 +33,9 @@ async function cailaRequest(query) {
         "temperature": 1
     };
     
-    let llmRes = "малышка";
+    log(`>>> Body: ${toPrettyString(body)}`)
+    
+    log(`>>> llmRes: ${toPrettyString(llmRes)}`)
     return llmRes; 
 
     // try {

@@ -26,7 +26,7 @@ async function cailaRequest(query, history) {
         "messages": [
             { 
                 "role": "system", 
-                "content": "Ты - телеграм-бот по имени Тими. Твое имя происходит от слова tea, визально ты имеешь образ мягкого и улыбчивого медведя. Твоя задача - выдавать человеку задания на день и напомнить о выполнении. Поддерживай беседу в доброжелательном и ненавязчивом тоне, можешь шутить, если это уместно. Тебе разрешено поддерживать разговор только на житейские темы вроде 'как дела, как прошел день', также можно поддержать разговоры о хобби или досуге. Остальные темы разговоров нужно пресекать. Не нужно консультировать человека на отвлеченные темы, нужно вежливо возвращать диалог в дозволенное русло. Если человек хочет получить новое задание, верни ответ '/newtask'. Если он хочет завершить начатое задание, верни ответ '/finishtask'. При разговоре учитывай эту историю общения: " + JSON.stringify(history, null, 2) 
+                "content": "Ты - телеграм-бот по имени Тими. Твое имя происходит от слова tea, визуально ты имеешь образ мягкого и улыбчивого медведя. Твоя задача - поддержать диалог в случае, если пользователь захочет поболтать с ботом за пределами его основного функционала - выдачи заданий на день. Поддерживай беседу в доброжелательном и ненавязчивом тоне, можешь шутить, если это уместно. Старайтся отвечать коротко, в 1-2 предложениях. Тебе разрешено поддерживать разговор только на житейские темы вроде 'как дела, как прошел день', также можно поддержать разговоры о хобби или досуге. Остальные темы разговоров нужно пресекать. Не нужно консультировать человека на отвлеченные темы, нужно вежливо возвращать диалог в дозволенное русло. Важно! Если человек хочет получить новое задание, верни в качестве своего ответа '/newtask'. Если он хочет завершить начатое задание, верни ответ '/finishtask'. При разговоре учитывай эту историю общения: " + JSON.stringify(history, null, 2) 
             },
             {
                 "role": "user",
@@ -48,20 +48,17 @@ async function cailaRequest(query, history) {
     let llmRes = res.data.choices[0].message.content;
     return llmRes; 
 
-    // try {
-    //     const res = await axios.post(
-    //         `https://caila.io/api/mlpgate/account/${account}/model/${model}/predict`,
-    //         JSON.stringify(body),
-    //         {
-    //             headers: headers,
-    //             httpsAgent: new https.Agent({ rejectUnauthorized: false })  // ← Игнорировать SSL-ошибки
-    //         }
-    //     );
-    //     let llmRes = res.data.choices[0].message.content;
-    //     return llmRes; 
-    // } catch (e) {
-    //     throw new Error(">>> Error calling Caila API in llmRequest" + JSON.stringify(e));
-    // }
+    try {
+        const res = await axios.post(
+            url,
+            body,
+            {headers: headers}
+        );
+        let llmRes = res.data.choices[0].message.content;
+        return llmRes; 
+    } catch (e) {
+        throw new Error(">>> Error calling Caila API in llmRequest" + JSON.stringify(e));
+    }
 }
 
 export default { answerMatchesQuestion, cailaRequest };

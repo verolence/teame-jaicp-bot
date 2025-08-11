@@ -90,19 +90,23 @@ theme: /Onboarding
                     $reactions.answer("По команде /history ты сможешь найти свои ответы на задания, а с командой /newtask получить новое предложение от меня.");
                     $reactions.transition("/");
                 } else {
-                    reactions.tr$ansition("/Freestyle/Convo");
+                    $reactions.transition("/Freestyle/Convo");
                 }
 
 theme: /Freestyle
     
     state: Convo
         event!: noMatch
+        script: 
+            $temp.context = $jsapi.chatHistoryInLlmFormat();
         scriptEs6:
             if (testMode()) {
                 $reactions.answer("Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!");
             } else {
-                let llmAnswer = await llm.cailaRequest($request.query);
-                $reactions.answer(llmAnswer);
+                let llmAnswer = await llm.cailaRequest($request.query, $temp.context);
+                if (llmAnswer == "/finishtask") $reactions.transition("/FinishTask");
+                else if (llmAnswer == "/newtask") $reactions.transition("/NewTask");
+                else $reactions.answer(llmAnswer);
             }
 
 theme: /Handlers

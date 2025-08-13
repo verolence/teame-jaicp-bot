@@ -99,8 +99,8 @@ theme: /Onboarding
             scriptEs6:
                 if (testMode() || llm.answerMatchesQuestion()) {
                     $session.taskAnswer = $request.query;
-                    $reactions.answer("Супер! Это ведь было не сложно? Но день стал уже чуточку лучше, когда удалось заметить в нем светлые вещи.");
-                    $reactions.answer("По команде /history ты сможешь найти свои ответы на задания, а с командой /newtask получить новое предложение от меня. Хочешь, предложу еще одну идею, или просто поболтаем?");
+                    $reactions.answer(answers["OnboardingCatchAnswer"]);
+                    $reactions.answer(answers["OnboardingDescrComments"]);
                     $reactions.transition("/");
                 } else {
                     $reactions.transition("/Freestyle/Convo");

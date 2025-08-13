@@ -9,8 +9,13 @@ require: llm.js
 require: patterns.sc
   module = sys.zb-common
   
-require: answers.yaml
+require: dicts/answers.yaml
     var = answers
+    
+# https://help.cloud.just-ai.com/jaicp/common/bot_structure/csv
+require: dicts/tasks.csv
+    name = Tasks
+    var = $Tasks
 
 init:
     bind("onAnyError", function() {
@@ -46,7 +51,9 @@ theme: /
         a: Ты можешь сразу написать свой ответ, либо взять задание сейчас, а затем использовать команду /finishtask для его завершения
         buttons: 
             "Взять задание!"
-            "Другое задание"
+            # TBD "Другое задание"
+        
+        # TBD state: ChangeTask
         
     state: FinishTask
         intent!: FinishTask
@@ -79,7 +86,7 @@ theme: /Onboarding
     state: FirstTask
         q: Сдать задание
         q: $regex</finishtask>
-        a: Твое задание на сегодня: практика благодарности. Напиши мне 2-3 вещи, за которые ты можешь поблагодарить этот день. Это может быть что-то очень значимое, а, может, и совсем простое. Благодарность за солнечное утро, или грячую воду в кране.
+        a: Твое задание на сегодня: практика благодарности. Это может быть что-то очень значимое, а, может, и совсем простое. Благодарность за солнечное утро, или грячую воду в кране. Напиши мне 2-3 вещи, за которые ты можешь поблагодарить этот день.
         script: 
             $session.currentTask = "Практика благодарности"
             

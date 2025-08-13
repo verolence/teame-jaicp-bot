@@ -90,9 +90,10 @@ theme: /Onboarding
     state: FirstTask
         q: Сдать задание
         q: $regex</finishtask>
-        a: Твое задание на сегодня: практика благодарности. Это может быть что-то очень значимое, а, может, и совсем простое. Благодарность за солнечное утро, или грячую воду в кране. Напиши мне 2-3 вещи, за которые ты можешь поблагодарить этот день.
         script: 
-            $session.currentTask = "Практика благодарности"
+            $session.currentTask = $Tasks["1"];
+            log(toPrettyString($session.currentTask));
+        a: Твое задание на сегодня: {{ $session.currentTask.alternateNames[0]}}. {{ $session.currentTask.value.task}}
             
         state: CatchGrattitude
             event: noMatch

@@ -17,9 +17,11 @@
 
 Платформа JAICP https://app.jaicp.com/
 
+Языки DSL и Java Script https://help.cloud.just-ai.com/jaicp/JS_API/es6-support
+
 Telegram Bot API https://core.telegram.org/bots/api
 
-Облачная БД https://supabase.com/
+Доступ к LLM https://caila.io/
 
 ## Контакты
 

@@ -20,7 +20,41 @@
       "answerValidationThreshold" : 0.8
     }
   },
-  "intents" : [ ],
+  "intents" : [ {
+    "path" : "/FinishTask",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "я выполнил"
+    }, {
+      "text" : "завершить задание"
+    }, {
+      "text" : "закончить выполнения"
+    }, {
+      "text" : "хочу сдать свое задание"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/NewTask",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "новое задание"
+    }, {
+      "text" : "хочу еще одно задание"
+    }, {
+      "text" : "ты можешь предложить мне еще идею на сегодня"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "priority" : 0
+  } ],
   "entities" : [ ],
   "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
   "spellerDictionary" : [ ],

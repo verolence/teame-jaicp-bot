@@ -4,6 +4,11 @@ entryPoint: main.sc
 
 botEngine: v2
 language: ru
+
+nlp:
+  intentNoMatchThresholds:
+    phrases: 0.5
+    patterns: 0.2
   
 tests:
   include:

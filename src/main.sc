@@ -37,6 +37,7 @@ theme: /
         a: {{ $session.currentTask }} - {{ $session.taskAnswer }}
         
     state: NewTask
+        intent!: NewTask
         q!: $regex</newtask>
         random:
             a: Когда будешь возвращаться домой, пройди непривычным для себя маршрутом. Сфотографируй для меня любой интересный объект, который раньше не замечал.
@@ -48,6 +49,7 @@ theme: /
             "Другое задание"
         
     state: FinishTask
+        intent!: FinishTask
         q!: Сдать задание
         q!: $regex</finishtask>
         a: Чтобы завершить задание, загрузи или напиши свой ответ в наш чат
@@ -99,6 +101,7 @@ theme: /Freestyle
         event!: noMatch
         script: 
             $temp.context = $jsapi.chatHistoryInLlmFormat();
+            # TBD if ($temp.context.length > 10) llm.shortenHistory($temp.context);
         scriptEs6:
             if (testMode()) {
                 $reactions.answer("Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!");

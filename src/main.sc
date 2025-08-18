@@ -88,24 +88,24 @@ theme: /Onboarding
         q: * || toState = "/Onboarding/FirstTask"
         
     state: FirstTask
-        q: Сдать задание
-        q: $regex</finishtask>
         script: 
-            $session.currentTask = $Tasks["1"];
+            $session.currentTaskNumber = 1;
+            $session.currentTask = $Tasks[$session.currentTaskNumber];
             log(toPrettyString($session.currentTask));
         a: Твое задание на сегодня: {{ $session.currentTask.alternateNames[0]}}. {{ $session.currentTask.value.task}}
-            
+        q: * || toState = "/Onboarding/FirstTask/CatchGrattitude"
+        event: fileEvent || toState = "/Onboarding/FirstTask/CatchGrattitude"
+
         state: CatchGrattitude
             event: noMatch
-            scriptEs6:
-                if (testMode() || llm.answerMatchesQuestion()) {
-                    $session.taskAnswer = $request.query;
-                    $reactions.answer(answers["OnboardingCatchAnswer"]);
-                    $reactions.answer(answers["OnboardingDescrComments"]);
-                    $reactions.transition("/");
-                } else {
-                    $reactions.transition("/Freestyle/Convo");
-                }
+            script:
+                $session.taskAnswer = $request.query;
+                $reactions.answer(answers["OnboardingCatchAnswer"]);
+                $reactions.answer(answers["OnboardingDescrComments"]);
+            buttons: 
+                "Новое задание"
+                "Просто поболтать"
+            go: /
 
 theme: /Freestyle
     
@@ -119,9 +119,10 @@ theme: /Freestyle
                 $reactions.answer("Рад бы поболтать с тобой, но функционал свободной беседы пока находится в стадии разработки!");
             } else {
                 let llmAnswer = await llm.cailaRequest($request.query, $temp.context);
-                if (llmAnswer == "/finishtask") $reactions.transition("/FinishTask");
-                else if (llmAnswer == "/newtask") $reactions.transition("/NewTask");
-                else $reactions.answer(llmAnswer);
+                $reactions.answer(llmAnswer);
+                
+                if ($session.currentTask) $reactions.buttons({ text: "Новое задание", transition: "/NewTask" });
+                else $reactions.buttons({ text: "Сдать задание", transition: "/FinishTask" });
             }
 
 theme: /Handlers

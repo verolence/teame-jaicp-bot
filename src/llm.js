@@ -1,10 +1,12 @@
 import axios from "axios"
 
+// TBD проверять, действительно ли человек сдел ответ, соотвтетвующий заданию
 const answerMatchesQuestion = (question, answer) => {
     let result = (answer === question);
     return result;
 };
 
+// 
 async function cailaRequest(query, history) {
     
     log(`>>> Query: ${toPrettyString(query)}`)

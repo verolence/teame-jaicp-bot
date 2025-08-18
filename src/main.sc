@@ -39,12 +39,17 @@ theme: /
             
     state: History
         q!: $regex</history>
-        a: {{ $session.currentTask }} - {{ $session.taskAnswer }}
+        a: Сожалею, но что эта часть функционала у меня в разработке, и я помню только то задание, которое сейчас выбрано.
+        script:
+            if ($session.currentTask) $reactions.buttons({ text: "Сдать задание", transition: "/FinishTask" });
+            else $reactions.buttons({ text: "Новое задание", transition: "/NewTask" });
         
     state: NewTask
         intent!: NewTask
-        q!: Новое задание
+        q!: (новое/сменить/другое) задание
         q!: $regex</newtask>
+        script:
+            delete $session.currentTask;
         random:
             a: Когда будешь возвращаться домой, пройди непривычным для себя маршрутом. Сфотографируй для меня любой интересный объект, который раньше не замечал.
             a: Сделай себе массаж головы, а также аккуратно разомни уши. Ты сразу почувствуешь, как будет благодарна нервная система. Опиши свои ощущения в паре слов.
@@ -52,10 +57,16 @@ theme: /
         a: Ты можешь сразу написать свой ответ, либо взять задание сейчас, а затем использовать команду /finishtask для его завершения
         buttons: 
             "Взять задание!"
-            # TBD "Другое задание"
+            "Просто поболтать"
+            "Другое задание" -> /NewTask
         
-        # TBD state: ChangeTask
-        
+    state: RemindTask
+        q!: Напомнить задание
+        a: Я давал тебе это задание: {{ $session.currentTask.alternateNames[0]}}. {{ $session.currentTask.value.task}}
+        buttons: 
+            "Сдать задание!"
+            "Сменить задание" -> /NewTask
+    
     state: FinishTask
         intent!: FinishTask
         q!: Сдать задание
@@ -121,8 +132,8 @@ theme: /Freestyle
                 let llmAnswer = await llm.cailaRequest($request.query, $temp.context);
                 $reactions.answer(llmAnswer);
                 
-                if ($session.currentTask) $reactions.buttons({ text: "Новое задание", transition: "/NewTask" });
-                else $reactions.buttons({ text: "Сдать задание", transition: "/FinishTask" });
+                if ($session.currentTask) $reactions.buttons({ text: "Сдать задание", transition: "/FinishTask" });
+                else $reactions.buttons({ text: "Новое задание", transition: "/NewTask" });
             }
 
 theme: /Handlers
